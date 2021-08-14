@@ -61,6 +61,10 @@ group :development, :test do
   gem 'rails-controller-testing'
 end
 
+group :production do
+  gem 'rails_12factor', '0.0.2'
+end
+
 gem 'uglifier'
 gem 'coffee-rails'
 gem 'jquery-rails'
