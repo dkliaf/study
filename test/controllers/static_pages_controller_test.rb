@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 require 'test_helper'
 
 class StaticPagesControllerTest < ActionController::TestCase
@@ -26,3 +27,12 @@ class StaticPagesControllerTest < ActionController::TestCase
     assert_select "title", "Contact | Ruby on Rails Tutorial Sample App"
   end
 end
+=======
+require "test_helper"
+
+class StaticPagesControllerTest < ActionDispatch::IntegrationTest
+  # test "the truth" do
+  #   assert true
+  # end
+end
+>>>>>>> origin/master

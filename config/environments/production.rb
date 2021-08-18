@@ -60,7 +60,11 @@ Rails.application.configure do
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
   # config.active_job.queue_adapter     = :resque
+<<<<<<< HEAD
   # config.active_job.queue_name_prefix = "sample_app_2_production"
+=======
+  # config.active_job.queue_name_prefix = "sample_app_production"
+>>>>>>> origin/master
 
   config.action_mailer.perform_caching = false
 
@@ -117,5 +121,8 @@ Rails.application.configure do
   # config.active_record.database_selector = { delay: 2.seconds }
   # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
+<<<<<<< HEAD
   config.force_ssl = true
+=======
+>>>>>>> origin/master
 end
