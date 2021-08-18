@@ -21,6 +21,7 @@ module SessionsHelper
       if user && user.authenticated?(cookies[:remember_token])
         log_in user
         @current_user = user
+        
       end
     end
   end
