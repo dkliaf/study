@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-module ApplicationHelper
-end
-=======
 module ApplicationHelper
     def full_title(page_title)
         base_title = "Ruby on Rails Tutorial Sample App"
@@ -12,4 +8,3 @@ module ApplicationHelper
         end
       end
 end
->>>>>>> origin/master
