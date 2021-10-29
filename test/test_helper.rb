@@ -3,7 +3,6 @@ require_relative "../config/environment"
 require "rails/test_help"
 
 class ActiveSupport::TestCase
-<<<<<<< HEAD
   fixtures :all
 
   # Возвращает true, если тестовый пользователь осуществил вход.
@@ -30,8 +29,6 @@ class ActiveSupport::TestCase
     def integration_test?
       defined?(post_via_redirect)
     end
-end
-=======
   # Run tests in parallel with specified workers
   parallelize(workers: :number_of_processors, with: :threads)
 
@@ -40,4 +37,3 @@ end
 
   # Add more helper methods to be used by all tests here...
 end
->>>>>>> origin/master

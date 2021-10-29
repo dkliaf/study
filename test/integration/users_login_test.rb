@@ -1,50 +1,49 @@
 require 'test_helper'
 
-class UsersLoginTest < ActionDispatch::IntegrationTest
+class UsersSignupTest < ActionDispatch::IntegrationTest
 
   def setup
-    @user = users(:michael)
+    ActionMailer::Base.deliveries.clear
   end
 
-  test "login with valid information" do
-    get login_path
-    post login_path, session: { email: @user.email, password: 'password' }
-    assert_redirected_to @user
-    follow_redirect!
-    assert_template 'users/show'
-    assert_select "a[href=?]", login_path, count: 0
-    assert_select "a[href=?]", logout_path
-    assert_select "a[href=?]", user_path(@user)
+  test "invalid signup information" do
+    get signup_path
+    assert_no_difference 'User.count' do
+      post users_path, user: { name:  "",
+                               email: "user@invalid",
+                               password:              "foo",
+                               password_confirmation: "bar" }
+    end
+    assert_template 'users/new'
+    assert_select 'div#error_explanation'
+    assert_select 'div.field_with_errors'
   end
 
-  test "login with valid information followed by logout" do
-    get login_path
-    post login_path, session: { email: @user.email, password: 'password' }
-    assert is_logged_in?
-    assert_redirected_to @user
-    follow_redirect!
-    assert_template 'users/show'
-    assert_select "a[href=?]", login_path, count: 0
-    assert_select "a[href=?]", logout_path
-    assert_select "a[href=?]", user_path(@user)
-    delete logout_path
+  test "valid signup information with account activation" do
+    get signup_path
+    assert_difference 'User.count', 1 do
+      post users_path, user: { name:  "Example User",
+                               email: "user@example.com",
+                               password:              "password",
+                               password_confirmation: "password" }
+    end
+    assert_equal 1, ActionMailer::Base.deliveries.size
+    user = assigns(:user)
+    assert_not user.activated?
+    # Попытка войти до активации
+    log_in_as(user)
     assert_not is_logged_in?
-    assert_redirected_to root_url
-    # Симулируем клик по ссылке для выхода во втором окне.
-    delete logout_path
+    # Невалидный активационный токен
+    get edit_account_activation_path("invalid token")
+    assert_not is_logged_in?
+    # Валидный токен, неверный адрес электронной почты
+    get edit_account_activation_path(user.activation_token, email: 'wrong')
+    assert_not is_logged_in?
+    # Валидный активационный токен и адрес почты
+    get edit_account_activation_path(user.activation_token, email: user.email)
+    assert user.reload.activated?
     follow_redirect!
-    assert_select "a[href=?]", login_path
-    assert_select "a[href=?]", logout_path,      count: 0
-    assert_select "a[href=?]", user_path(@user), count: 0
-  end
-
-  test "login with remembering" do
-    log_in_as(@user, remember_me: '1')
-    assert_not_nil cookies['remember_token']
-  end
-
-  test "login without remembering" do
-    log_in_as(@user, remember_me: '0')
-    assert_nil cookies['remember_token']
+    assert_template 'users/show'
+    assert is_logged_in?
   end
 end
